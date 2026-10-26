@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Influencer Desk</title>
+  <meta name="description" content="Manage your influencer outreach roster — contacts, categories, followers, rates and deal status.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="app">
+      <div class="brand">
+        <h1>Influencer Desk<span class="dot">.</span></h1>
+        <p>Your outreach roster — contacts, categories and deal status in one place.</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn" id="importBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0-12 4 4m-4-4-4 4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          Import CSV / Excel
+        </button>
+        <button class="btn primary" id="addBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Add influencer
+        </button>
+      </div>
+    </header>
+
+    <div id="banner"></div>
+
+    <div class="tiles" id="tiles"></div>
+
+    <div class="toolbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+        <input id="search" type="text" placeholder="Search handle, name, email, category…" autocomplete="off">
+      </div>
+      <select class="filter" id="catFilter"><option value="">All categories</option></select>
+      <select class="filter" id="statusFilter"><option value="">All statuses</option></select>
+      <span class="count" id="count"></span>
+    </div>
+
+    <div class="tablecard">
+      <div class="tablescroll">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="handle">Influencer <span class="arrow"></span></th>
+              <th data-sort="category">Category <span class="arrow"></span></th>
+              <th data-sort="followers" class="num">Followers <span class="arrow"></span></th>
+              <th class="nosort">Email</th>
+              <th data-sort="rate" class="num">Rate (₹) <span class="arrow"></span></th>
+              <th data-sort="status">Status <span class="arrow"></span></th>
+              <th class="nosort"></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div id="emptyState"></div>
+    </div>
+
+    <footer class="pagefoot">
+      <span>Influencer Desk</span> · static front end + Supabase (PostgreSQL)
+    </footer>
+  </div>
+
+  <!-- Hidden file input for CSV/Excel import -->
+  <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" hidden>
+
+  <!-- Libraries (pinned versions, loaded from CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- App -->
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

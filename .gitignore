@@ -1,0 +1,10 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# Note: js/config.js IS committed on purpose.
+# The Supabase anon key is a public, browser-safe key — your data is
+# protected by Row Level Security, not by hiding this key.
