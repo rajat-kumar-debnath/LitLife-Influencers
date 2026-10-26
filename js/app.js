@@ -161,6 +161,8 @@
         <td class="num">${r.rate ? "₹" + fmtNum(r.rate) : "—"}</td>
         <td><span class="pill s-${st}">${esc(st)}</span></td>
         <td><div class="rowbtns">
+          <button class="iconbtn" title="View details" data-view="${r.id}" aria-label="View details">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
           <button class="iconbtn" title="Edit" data-edit="${r.id}" aria-label="Edit">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
           <button class="iconbtn danger" title="Delete" data-del="${r.id}" aria-label="Delete">
@@ -169,6 +171,7 @@
       </tr>`;
     }).join("");
 
+    tbody.querySelectorAll("[data-view]").forEach(b => b.onclick = () => openDetails(b.getAttribute("data-view")));
     tbody.querySelectorAll("[data-edit]").forEach(b => b.onclick = () => openForm(b.getAttribute("data-edit")));
     tbody.querySelectorAll("[data-del]").forEach(b => b.onclick = () => askDelete(b.getAttribute("data-del")));
   }
@@ -225,6 +228,55 @@
     query = ""; activeStatus = ""; activeCat = "";
     $("search").value = ""; $("statusFilter").value = ""; $("catFilter").value = "";
     render();
+  }
+
+  // ---------- view details ----------
+  function openDetails(id) {
+    const r = records.find(x => String(x.id) === String(id));
+    if (!r) return;
+    const st = STATUSES.includes(r.status) ? r.status : "New";
+    const initials = (r.handle || "?").replace(/[^a-z0-9]/gi, "").slice(0, 2) || "?";
+    const fmtDate = (d) => {
+      if (!d) return "—";
+      const dt = new Date(d);
+      return isNaN(dt) ? "—" : dt.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+    };
+    const row = (label, value, full) =>
+      `<div class="${full ? "full" : ""}"><dt>${label}</dt><dd>${value}</dd></div>`;
+
+    modal(`
+      <div class="modal" role="dialog" aria-modal="true" aria-label="Influencer details">
+        <header>
+          <h2>Influencer details</h2>
+          <button class="iconbtn" data-close aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        </header>
+        <div class="body">
+          <div class="detail-head">
+            <div class="avatar lg" style="background:${STATUS_COLOR[st]}">${esc(initials)}</div>
+            <div class="detail-id">
+              <div class="detail-name">${esc(r.name || "No name yet")}</div>
+              <a href="https://instagram.com/${encodeURIComponent(r.handle || "")}" target="_blank" rel="noopener">@${esc(r.handle || "")}</a>
+            </div>
+            <span class="pill s-${st}">${esc(st)}</span>
+          </div>
+          <dl class="detail-grid">
+            ${row("Category", r.category ? esc(r.category) : "—")}
+            ${row("Status", esc(st))}
+            ${row("Followers", fmtNum(r.followers))}
+            ${row("Rate", r.rate ? "₹" + fmtNum(r.rate) : "—")}
+            ${row("Email", r.email ? `<span class="selectable">${esc(r.email)}</span>` : "—", true)}
+            ${row("Notes", r.notes ? esc(r.notes).replace(/\n/g, "<br>") : "—", true)}
+            ${row("Added", fmtDate(r.created_at))}
+            ${row("Last updated", fmtDate(r.updated_at))}
+          </dl>
+        </div>
+        <footer>
+          <button class="btn ghost" data-close>Close</button>
+          <button class="btn primary" id="editFromDetail">Edit</button>
+        </footer>
+      </div>`);
+    $("editFromDetail").onclick = () => { closeModal(); openForm(id); };
   }
 
   // ---------- add / edit ----------

@@ -264,6 +264,25 @@ tbody tr:hover { background: var(--surface-2); }
 }
 .grow { flex: 1; }
 
+/* Details view */
+.detail-head {
+  display: flex; align-items: center; gap: 14px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--line); margin-bottom: 4px;
+}
+.avatar.lg { width: 52px; height: 52px; font-size: 19px; }
+.detail-id { flex: 1; min-width: 0; }
+.detail-name { font-family: var(--font-display); font-weight: 600; font-size: 19px; line-height: 1.2; }
+.detail-id a { color: var(--accent); text-decoration: none; font-size: 14px; }
+.detail-id a:hover { text-decoration: underline; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; margin: 0; }
+.detail-grid .full { grid-column: 1 / -1; }
+.detail-grid dt {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--muted); font-weight: 700; margin-bottom: 3px;
+}
+.detail-grid dd { margin: 0; font-size: 15px; color: var(--fg); word-break: break-word; }
+.detail-grid .selectable { user-select: all; }
+
 /* Import modal */
 .dropzone {
   border: 2px dashed var(--line); border-radius: 12px; padding: 30px 20px;
