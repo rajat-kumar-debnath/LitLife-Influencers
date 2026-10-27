@@ -150,6 +150,15 @@ select.filter {
 }
 .count { color: var(--muted); font-size: 13px; margin-left: auto; white-space: nowrap; }
 
+.freshness {
+  margin: -8px 0 16px; font-size: 12.5px; color: var(--faint);
+  display: flex; align-items: center; gap: 6px;
+}
+.freshness::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ok); flex: none;
+}
+
 /* Table */
 .tablecard {
   background: var(--surface); border: 1px solid var(--line);

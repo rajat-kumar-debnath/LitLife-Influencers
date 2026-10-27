@@ -114,6 +114,7 @@
   function render() {
     renderTiles();
     renderFilters();
+    renderFreshness();
     const rows = filtered();
     const tbody = $("rows");
     const empty = $("emptyState");
@@ -196,6 +197,20 @@
       $("statusFilter").value = activeStatus;
       render();
     });
+  }
+
+  function renderFreshness() {
+    const el = $("freshness");
+    if (!el) return;
+    if (!records.length) { el.hidden = true; return; }
+    const latest = records.reduce((m, r) => {
+      const t = r.updated_at ? new Date(r.updated_at).getTime() : 0;
+      return (t && t > m) ? t : m;
+    }, 0);
+    if (!latest) { el.hidden = true; return; }
+    el.textContent = "Follower counts last refreshed: " +
+      new Date(latest).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+    el.hidden = false;
   }
 
   function renderFilters() {
